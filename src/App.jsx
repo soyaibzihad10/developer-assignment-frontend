@@ -1,45 +1,28 @@
-import Nav from "./components/Nav";
-import {
-  CustomerReviews,
-  Footer,
-  Hero,
-  PopularProducts,
-  Services,
-  SpecialOffer,
-  Subscribe,
-  SuperQuality,
-} from "./sections";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './page/Home';
+import Register from './page/Register';
+import Login from './page/Login';
+import MainDashboard from './page/MainDashBoard';
+import ViewProfile from './page/ViewProfile';
 
-const App = () => {
-  return (
-    <main className='relative'>
-      <Nav />
-      <section className='xl:padding-l wide:padding-r padding-b'>
-        <Hero />
-      </section>
-      <section className='padding'>
-        <PopularProducts />
-      </section>
-      <section className='padding'>
-        <SuperQuality />
-      </section>
-      <section className='padding-x py-10'>
-        <Services />
-      </section>
-      <section className='padding'>
-        <SpecialOffer />
-      </section>
-      <section className='bg-pale-blue padding'>
-        <CustomerReviews />
-      </section>
-      <section className='padding-x sm:py-32 py-16 w-full'>
-        <Subscribe />
-      </section>
-      <section className=' bg-black padding-x padding-t pb-8'>
-        <Footer />
-      </section>
-    </main>
-  )
+function App() {
+    return (
+        <Router>
+            <div className="min-h-screen bg-gray-50">
+                <Navbar />
+                <div className="pt-16"> {/* Add padding-top to prevent content from going under navbar */}
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/dashboard" element={<MainDashboard />} />
+                        <Route path="/profile" element={<ViewProfile />} />
+                    </Routes>
+                </div>
+            </div>
+        </Router>
+    );
 }
 
-export default App
+export default App;
