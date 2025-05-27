@@ -5,6 +5,10 @@ import Register from './page/Register';
 import Login from './page/Login';
 import MainDashboard from './page/MainDashBoard';
 import ViewProfile from './page/ViewProfile';
+import UpdateProfile from './page/UpdateProfile';
+import PasswordResetRequest from './page/PasswordResetRequest';
+import ResetPassword from './page/ResetPassword';
+import EmailVerification from './page/EmailVerification';
 
 function App() {
     return (
@@ -18,6 +22,10 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/dashboard" element={<MainDashboard />} />
                         <Route path="/profile" element={<ViewProfile />} />
+                        <Route path="/profile/update" element={<UpdateProfile />} />
+                        <Route path="/password-reset-request" element={<PasswordResetRequest />} />
+                        <Route path="/reset-password" element={<ResetPassword />} />
+                        <Route path="/auth/verify" element={<EmailVerification />} />
                     </Routes>
                 </div>
             </div>
