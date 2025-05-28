@@ -115,7 +115,7 @@ const AdminDashboard = () => {
       color: '#4B5563'
     },
     {
-      name: 'Get Permission Detail',
+      name: 'Get Permission Details',
       path: '/permissions/details',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">

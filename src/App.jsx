@@ -16,6 +16,16 @@ import UpdateUser from './page/UpdateUser';
 import ChangeUserRole from './page/ChangeUserRole';
 import PromoteToModerator from './page/PromoteToModerator';
 import DemoteUser from './page/DemoteUser';
+import ListRoles from './page/ListRoles';
+import RoleDetails from './page/RoleDetails';
+import CreateRole from './page/CreateRole';
+import UpdateRole from './page/UpdateRole';
+import DeleteRole from './page/DeleteRole';
+import ListPermissions from './page/ListPermissions';
+import PermissionDetails from './page/PermissionDetails';
+import MyPermissions from './page/MyPermissions';
+import PromoteToAdmin from './page/PromoteToAdmin';
+import ResendVerification from './page/ResendVerification';
 
 function App() {
     return (
@@ -34,6 +44,8 @@ function App() {
                         <Route path="/password-reset-request" element={<PasswordResetRequest />} />
                         <Route path="/reset-password" element={<ResetPassword />} />
                         <Route path="/request-deletion" element={<DeleteRequest />} />
+                        <Route path="/my-permissions" element={<MyPermissions />} />
+                        <Route path="/resend-verification" element={<ResendVerification />} />
 
                         {/* moderator routes */}
                         <Route path="/users/delete" element={<DeleteUser />} />
@@ -45,6 +57,16 @@ function App() {
                         <Route path="/users/change-role" element={<ChangeUserRole />} />
                         <Route path="/users/promote" element={<PromoteToModerator />} />
                         <Route path="/users/demote" element={<DemoteUser />} />
+                        <Route path="/roles/list" element={<ListRoles />} />
+                        <Route path="/roles/details" element={<RoleDetails />} />
+                        <Route path="/roles/create" element={<CreateRole />} />
+                        <Route path="/roles/update" element={<UpdateRole />} />
+                        <Route path="/roles/delete" element={<DeleteRole />} />
+                        <Route path="/permissions/list" element={<ListPermissions />} />
+                        <Route path="/permissions/details" element={<PermissionDetails />} />
+
+                        {/* system admin routes */}
+                        <Route path="/users/promote-admin" element={<PromoteToAdmin />} />
                     </Routes>
                 </div>
             </div>
