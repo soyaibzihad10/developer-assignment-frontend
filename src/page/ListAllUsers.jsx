@@ -66,7 +66,16 @@ const ListAllUsers = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      User Info
+                      Username
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      First Name
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Last Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Role
@@ -83,18 +92,23 @@ const ListAllUsers = () => {
                   {users.map((user) => (
                     <tr key={user.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div>
-                            <div className="text-sm font-medium text-gray-900">
-                              {user.username}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              {user.email}
-                            </div>
-                            <div className="text-xs text-gray-400">
-                              {user.first_name} {user.last_name}
-                            </div>
-                          </div>
+                        <div className="text-sm font-medium text-gray-900">
+                          {user.username}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-500">
+                          {user.email}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          {user.first_name}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          {user.last_name}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -110,16 +124,10 @@ const ListAllUsers = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
-                          onClick={() => navigate(`/users/${user.id}`)}
-                          className="text-[#10B981] hover:text-green-700 mr-4"
-                        >
-                          View
-                        </button>
-                        <button
                           onClick={() => navigate(`/users/update/${user.id}`)}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-[#3B82F6] hover:text-blue-700 mr-4"
                         >
-                          Edit
+                          Update
                         </button>
                       </td>
                     </tr>

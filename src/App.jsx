@@ -12,6 +12,10 @@ import DeleteRequest from './page/DeleteRequest';
 import DeleteUser from './page/DeleteUser';
 import UserDetails from './page/UserDetails';
 import ListAllUsers from './page/ListAllUsers';
+import UpdateUser from './page/UpdateUser';
+import ChangeUserRole from './page/ChangeUserRole';
+import PromoteToModerator from './page/PromoteToModerator';
+import DemoteUser from './page/DemoteUser';
 
 function App() {
     return (
@@ -20,6 +24,7 @@ function App() {
                 <Navbar />
                 <div className="pt-16">
                     <Routes>
+                        {/* user routes */}
                         <Route path="/" element={<Home />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/login" element={<Login />} />
@@ -30,12 +35,16 @@ function App() {
                         <Route path="/reset-password" element={<ResetPassword />} />
                         <Route path="/request-deletion" element={<DeleteRequest />} />
 
-
+                        {/* moderator routes */}
                         <Route path="/users/delete" element={<DeleteUser />} />
                         <Route path="/users/details" element={<UserDetails />} />
 
-
+                        {/* admin routes */}
                         <Route path="/users/list-all" element={<ListAllUsers />} />
+                        <Route path="/users/update" element={<UpdateUser />} />
+                        <Route path="/users/change-role" element={<ChangeUserRole />} />
+                        <Route path="/users/promote" element={<PromoteToModerator />} />
+                        <Route path="/users/demote" element={<DemoteUser />} />
                     </Routes>
                 </div>
             </div>

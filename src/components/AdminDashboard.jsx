@@ -15,7 +15,7 @@ const AdminDashboard = () => {
       color: '#10B981'
     },
     {
-      name: 'Update User',
+      name: 'Update Users',
       path: '/users/update',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
