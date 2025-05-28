@@ -75,11 +75,13 @@ const Login = () => {
         <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 {/* Logo */}
-                <div className="flex justify-center space-x-1 mb-6">
-                    <span className="w-2 h-2 bg-[#4285F4] rounded-full"></span>
-                    <span className="w-2 h-2 bg-[#EA4335] rounded-full"></span>
-                    <span className="w-2 h-2 bg-[#FBBC05] rounded-full"></span>
-                    <span className="w-2 h-2 bg-[#34A853] rounded-full"></span>
+                <div className="flex justify-center mb-6">
+                    <div className="grid grid-cols-2 gap-1">
+                        <span className="w-2 h-2 bg-[#4285F4] rounded-full"></span>
+                        <span className="w-2 h-2 bg-[#EA4335] rounded-full"></span>
+                        <span className="w-2 h-2 bg-[#FBBC05] rounded-full"></span>
+                        <span className="w-2 h-2 bg-[#34A853] rounded-full"></span>
+                    </div>
                 </div>
 
                 <h2 className="mt-6 text-center text-3xl font-normal text-gray-900">

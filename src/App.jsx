@@ -32,7 +32,7 @@ function App() {
         <Router>
             <div className="min-h-screen bg-gray-50">
                 <Navbar />
-                <div className="pt-16">
+                <div className="">
                     <Routes>
                         {/* user routes */}
                         <Route path="/" element={<Home />} />

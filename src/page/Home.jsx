@@ -6,11 +6,11 @@ const Home = () => {
     return (
         <div className="min-h-screen bg-white">
             {/* Hero Section */}
-            <div className="relative pt-20 pb-16 md:pt-16 md:pb-24"> 
+            <div className="relative pt-20 pb-16 md:pt-16 md:pb-24">
                 <div className="container mx-auto px-6">
                     <div className="max-w-4xl mx-auto text-center">
                         <h1 className="text-5xl md:text-7xl font-normal text-gray-900 mb-6 leading-tight">
-                            Secure Authentication for the 
+                            Secure Authentication for the
                             <div className="inline-flex flex-wrap font-medium">
                                 <span className="text-[#4285F4]">M</span>
                                 <span className="text-[#EA4335]">o</span>
