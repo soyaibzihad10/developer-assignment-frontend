@@ -26,7 +26,7 @@ const UserDashboard = () => {
       color: '#4285F4'
     },
     {
-      name: 'Password Reset',
+      name: 'Password Reset Request',
       path: '/password-reset-request',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">

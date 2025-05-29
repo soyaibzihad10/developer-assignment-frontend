@@ -52,7 +52,7 @@ const PasswordResetRequest = () => {
                     <div className="px-8 py-6 border-b border-gray-200">
                         <h2 className="text-2xl font-semibold text-gray-800 flex items-center">
                             <span className="w-2 h-8 bg-[#FBBC05] rounded-full mr-3" />
-                            Reset Password
+                            Reset Password Request
                         </h2>
                     </div>
 

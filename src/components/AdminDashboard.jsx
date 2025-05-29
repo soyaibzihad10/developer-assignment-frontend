@@ -6,7 +6,7 @@ const AdminDashboard = () => {
   const adminActions = [
     {
       name: 'List All Users',
-      path: '/users/list-all', 
+      path: '/users/list-all',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
@@ -128,19 +128,18 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <section className="p-8 max-w-6xl mx-auto">
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-8 flex items-center">
-          <span className="w-2 h-8 bg-[#10B981] rounded-full mr-3"></span>
-          Admin Dashboard
-        </h2>
+    <div className="space-y-8">
+      {/* Include Moderator Dashboard at the top */}
+      <ModeratorDashboard />
 
-        {/* Render moderator-specific actions */}
-        <ModeratorDashboard />
+      {/* Admin Actions Section */}
+      <section className="p-8 max-w-6xl mx-auto">
+        <div className="bg-white rounded-xl shadow-lg p-6">
+          <h2 className="text-3xl font-semibold text-gray-800 mb-8 flex items-center">
+            <span className="w-2 h-8 bg-[#3B82F6] rounded-full mr-3"></span>
+            Admin Actions
+          </h2>
 
-        {/* Render admin-specific actions */}
-        <div className="mt-8">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Admin Actions</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {adminActions.map((action, index) => {
               const card = (
@@ -188,8 +187,8 @@ const AdminDashboard = () => {
             })}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 

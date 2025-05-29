@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import UserDashboard from './UserDashboard';
 import AdminDashboard from './AdminDashboard';
 
 const SystemAdminDashboard = () => {
-
-  // System Admin-specific action
   const systemAdminActions = [
     {
       name: 'Promote to Admin',
@@ -16,17 +13,22 @@ const SystemAdminDashboard = () => {
         </svg>
       ),
       color: '#9333EA'
-    }
+    },
   ];
 
   return (
-    <section className="p-8 max-w-6xl mx-auto">
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <AdminDashboard />
+    <div className="space-y-8">
+      {/* Include Admin Dashboard at the top */}
+      <AdminDashboard />
 
-        {/* Render system admin-specific actions */}
-        <div className="mt-8">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">System Admin Actions</h3>
+      {/* System Admin Actions Section */}
+      <section className="p-8 max-w-6xl mx-auto">
+        <div className="bg-white rounded-xl shadow-lg p-6">
+          <h2 className="text-3xl font-semibold text-gray-800 mb-8 flex items-center">
+            <span className="w-2 h-8 bg-[#9333EA] rounded-full mr-3"></span>
+            System Admin Actions
+          </h2>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {systemAdminActions.map((action, index) => {
               const card = (
@@ -71,8 +73,8 @@ const SystemAdminDashboard = () => {
             })}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 

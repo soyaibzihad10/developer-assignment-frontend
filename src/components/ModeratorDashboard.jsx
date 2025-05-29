@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link
+import { Link } from 'react-router-dom';
 import UserDashboard from './UserDashboard';
 
 const ModeratorDashboard = () => {
@@ -7,7 +7,7 @@ const ModeratorDashboard = () => {
   const moderatorActions = [
     {
       name: 'See user details',
-      path: '/users/details', 
+      path: '/users/details',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v2h5v-2m-3.356-4.857a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -28,19 +28,18 @@ const ModeratorDashboard = () => {
   ];
 
   return (
-    <section className="p-8 max-w-6xl mx-auto">
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-8 flex items-center">
-          <span className="w-2 h-8 bg-[#8B5CF6] rounded-full mr-3"></span>
-          Moderator Dashboard
-        </h2>
-        
-        {/* Render UserDashboard component */}
-        <UserDashboard />
+    <div className="space-y-8">
+      {/* Include User Dashboard at the top */}
+      <UserDashboard />
 
-        {/* Render additional moderator-specific actions */}
-        <div className="mt-8">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Moderator Actions</h3>
+      {/* Moderator Actions Section */}
+      <section className="p-8 max-w-6xl mx-auto">
+        <div className="bg-white rounded-xl shadow-lg p-6">
+          <h2 className="text-3xl font-semibold text-gray-800 mb-8 flex items-center">
+            <span className="w-2 h-8 bg-[#8B5CF6] rounded-full mr-3"></span>
+            Moderator Actions
+          </h2>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {moderatorActions.map((action, index) => {
               const card = (
@@ -73,7 +72,6 @@ const ModeratorDashboard = () => {
                 </div>
               );
 
-              // If action has a path, use Link; otherwise, use button
               return action.path ? (
                 <Link to={action.path} key={index}>
                   {card}
@@ -86,8 +84,8 @@ const ModeratorDashboard = () => {
             })}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 
