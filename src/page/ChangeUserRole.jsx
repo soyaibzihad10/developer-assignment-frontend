@@ -5,58 +5,38 @@ import axios from 'axios';
 const ChangeUserRole = () => {
     const navigate = useNavigate();
     const [userId, setUserId] = useState('');
+    const [role, setRole] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const [currentRole, setCurrentRole] = useState('');
-    const [selectedRole, setSelectedRole] = useState('');
-    const [userData, setUserData] = useState(null);
+    const [roles, setRoles] = useState([]);
 
-    // Available roles (excluding admin, system_admin, and moderator as per backend validation)
-    const availableRoles = ['user', 'premium_user', 'basic_user'];
+    useEffect(() => {
+        const fetchRoles = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    navigate('/login');
+                    return;
+                }
 
-    const fetchUserData = async (id) => {
-        try {
-            setLoading(true);
-            setError('');
+                const response = await axios.get('http://localhost:8080/api/v1/roles', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    withCredentials: true
+                });
 
-            const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user'));
-
-            if (!token || !['admin', 'system_admin'].includes(user.user_type)) {
-                navigate('/dashboard');
-                return;
+                if (response.data.roles) {
+                    setRoles(response.data.roles);
+                }
+            } catch (err) {
+                setError('Failed to fetch roles');
             }
+        };
 
-            const response = await axios.get(`http://localhost:8080/api/v1/users/${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                withCredentials: true
-            });
-
-            if (response.data.status === 'success') {
-                const fetchedUserData = response.data.user;
-                setUserData(fetchedUserData);
-                setCurrentRole(fetchedUserData.user_type);
-                setSelectedRole(fetchedUserData.user_type);
-            }
-        } catch (err) {
-            setError(err.response?.data?.message || 'Failed to fetch user data');
-            setUserData(null);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        if (!userId.trim()) {
-            setError('Please enter a user ID');
-            return;
-        }
-        await fetchUserData(userId.trim());
-    };
+        fetchRoles();
+    }, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -67,26 +47,33 @@ const ChangeUserRole = () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('No authentication token found');
-            }
-
-            // Don't submit if role hasn't changed
-            if (currentRole === selectedRole) {
-                setError('Please select a different role');
-                setLoading(false);
+                navigate('/login');
                 return;
             }
 
-            // Don't allow changing to admin, system_admin, or moderator
-            if (['admin', 'system_admin', 'moderator'].includes(selectedRole)) {
-                setError('Cannot change role to admin, system admin, or moderator');
+            // First, check the user's current role
+            const userResponse = await axios.get(
+                `http://localhost:8080/api/v1/users/${userId}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    withCredentials: true
+                }
+            );
+
+            const userType = userResponse.data.user?.user_type;
+
+            // Check if user is admin, system_admin, or moderator
+            if (['admin', 'system_admin', 'moderator'].includes(userType)) {
+                setError(`Cannot change role of ${userType.replace('_', ' ')}. This is a protected role.`);
                 setLoading(false);
                 return;
             }
 
             const response = await axios.post(
                 `http://localhost:8080/api/v1/users/${userId}/role`,
-                { role: selectedRole },
+                { role: role.toLowerCase() },
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -98,18 +85,18 @@ const ChangeUserRole = () => {
 
             if (response.data.status === 'success') {
                 setSuccess('Role updated successfully');
-                // Reset form after successful update
-                setTimeout(() => {
-                    setUserData(null);
-                    setUserId('');
-                    setCurrentRole('');
-                    setSelectedRole('');
-                    setSuccess('');
-                }, 2000);
+                setUserId('');
+                setRole('');
             }
         } catch (err) {
-            console.error('Change Role Error:', err);
-            setError(err.response?.data?.message || 'Failed to change user role');
+            // Handle specific error cases
+            if (err.response?.data?.message?.includes('cannot change role of admin') ||
+                err.response?.data?.message?.includes('system admin') ||
+                err.response?.data?.message?.includes('moderator')) {
+                setError('Cannot change role of admin, system admin, or moderator. This is a protected role.');
+            } else {
+                setError(err.response?.data?.message || 'Failed to change role');
+            }
         } finally {
             setLoading(false);
         }
@@ -126,137 +113,75 @@ const ChangeUserRole = () => {
                         </h2>
                     </div>
 
-                    {!userData ? (
-                        // Step 1: Search for user
-                        <form onSubmit={handleSearch} className="px-8 py-6">
-                            {error && (
-                                <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
-                                    {error}
-                                </div>
-                            )}
+                    <div className="px-8 py-6">
+                        {error && (
+                            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                                {error}
+                            </div>
+                        )}
 
-                            <div className="space-y-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        User ID
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={userId}
-                                        onChange={(e) => setUserId(e.target.value)}
-                                        placeholder="Enter user ID to change role"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md 
-                                                 focus:ring-[#F59E0B] focus:border-[#F59E0B]"
-                                        required
-                                    />
-                                </div>
+                        {success && (
+                            <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+                                {success}
+                            </div>
+                        )}
 
-                                <div className="flex space-x-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => navigate('/dashboard')}
-                                        className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-md 
-                                                 hover:bg-gray-200 transition-all"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        disabled={loading}
-                                        className={`flex-1 px-6 py-3 bg-[#F59E0B] text-white rounded-md 
-                                                 hover:bg-amber-600 transition-all
-                                                 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                    >
-                                        {loading ? 'Searching...' : 'Search User'}
-                                    </button>
-                                </div>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    User ID
+                                </label>
+                                <input
+                                    type="text"
+                                    value={userId}
+                                    onChange={(e) => setUserId(e.target.value.trim())}
+                                    placeholder="Enter user ID"
+                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                                <p className="mt-1 text-sm text-gray-500">
+                                    Note: Cannot change roles of admin, system admin, or moderator users
+                                </p>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    New Role
+                                </label>
+                                <select
+                                    value={role}
+                                    onChange={(e) => setRole(e.target.value)}
+                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                                    required
+                                >
+                                    <option value="">Select a role</option>
+                                    {roles.map(role => (
+                                        <option key={role.id} value={role.name}>
+                                            {role.name.charAt(0).toUpperCase() + role.name.slice(1)}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className="flex space-x-4">
+                                <button
+                                    type="button"
+                                    onClick={() => navigate('/dashboard')}
+                                    className="flex-1 p-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={loading || !userId || !role}
+                                    className={`flex-1 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 
+                                        ${loading || !userId || !role ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                >
+                                    {loading ? 'Updating...' : 'Change Role'}
+                                </button>
                             </div>
                         </form>
-                    ) : (
-                        // Step 2: Change role form
-                        <form onSubmit={handleSubmit} className="px-8 py-6">
-                            {error && (
-                                <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
-                                    {error}
-                                </div>
-                            )}
-                            {success && (
-                                <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700">
-                                    {success}
-                                </div>
-                            )}
-
-                            <div className="space-y-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Username
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={userData.username}
-                                        className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-500"
-                                        disabled
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Current Role
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={currentRole}
-                                        className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-500"
-                                        disabled
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        New Role
-                                    </label>
-                                    <select
-                                        value={selectedRole}
-                                        onChange={(e) => setSelectedRole(e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md 
-                                                 focus:ring-[#F59E0B] focus:border-[#F59E0B]"
-                                        required
-                                    >
-                                        <option value="">Select a role</option>
-                                        {availableRoles.map(role => (
-                                            <option key={role} value={role}>
-                                                {role.replace('_', ' ').toUpperCase()}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div className="flex space-x-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setUserData(null);
-                                            setUserId('');
-                                            setError('');
-                                        }}
-                                        className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-md 
-                                                 hover:bg-gray-200 transition-all"
-                                    >
-                                        Back
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        disabled={loading}
-                                        className={`flex-1 px-6 py-3 bg-[#F59E0B] text-white rounded-md 
-                                                 hover:bg-amber-600 transition-all
-                                                 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                    >
-                                        {loading ? 'Updating...' : 'Change Role'}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    )}
+                    </div>
                 </div>
             </div>
         </div>

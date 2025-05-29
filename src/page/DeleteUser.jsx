@@ -13,7 +13,7 @@ const DeleteUser = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
-    
+
     console.log('User:', user);
     console.log('Token:', token);
 
@@ -34,7 +34,7 @@ const DeleteUser = () => {
       setLoading(true);
       setError('');
       setSuccess('');
-      
+
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('No authentication token found');
@@ -46,7 +46,7 @@ const DeleteUser = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          withCredentials: true, 
+          withCredentials: true,
         }
       );
 
